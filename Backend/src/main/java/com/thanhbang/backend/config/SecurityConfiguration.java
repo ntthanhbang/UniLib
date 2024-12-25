@@ -33,6 +33,7 @@ public class SecurityConfiguration {
             .permitAll()
             .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
             .requestMatchers("/api/v1/user/**").hasAnyAuthority("ADMIN", "USER")
+            .requestMatchers("/api/v1/book/**").permitAll()
             .anyRequest().authenticated())
         .exceptionHandling(exception -> {
           exception.authenticationEntryPoint(

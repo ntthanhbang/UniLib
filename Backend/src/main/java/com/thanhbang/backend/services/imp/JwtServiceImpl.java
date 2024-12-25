@@ -15,8 +15,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import com.thanhbang.backend.entities.Token;
+import com.thanhbang.backend.entities.User;
 import com.thanhbang.backend.exceptions.TokenNotFoundException;
 import com.thanhbang.backend.repositories.TokenRepository;
+import com.thanhbang.backend.repositories.UsersRepositories;
 import com.thanhbang.backend.services.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
   private final TokenRepository tokenRepository;
+  private final UsersRepositories usersRepositories;
 
   @Value("${token.signing.key}")
   private String jwtSigningKey;
@@ -41,6 +44,12 @@ public class JwtServiceImpl implements JwtService {
   @Override
   public String extractUserName(String token) {
     return extractClaim(token, Claims::getSubject);
+  }
+
+  public User getUser(String token) {
+    String email = extractUserName(token);
+    User userData = usersRepositories.findByEmail(email).get();
+    return userData;
   }
 
   @Override

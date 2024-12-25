@@ -22,4 +22,9 @@ public class BookService {
     Book res = bookRepository.findById(id).get();
     return res;
   }
+
+  public List<Book> getBookByName(String name) {
+    List<Book> res = bookRepository.findByBookNameContaining(name);
+    return res;
+  }
 }

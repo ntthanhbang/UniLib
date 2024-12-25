@@ -1,10 +1,10 @@
 package com.thanhbang.backend.controllers;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import com.thanhbang.backend.entities.Book;
@@ -31,4 +31,8 @@ public class BookController {
     return ResponseEntity.notFound().build();
   }
 
+  @GetMapping("/search")
+  public ResponseEntity<List<Book>> getBookByName(@RequestParam String q) {
+    return ResponseEntity.ok(this.bookService.getBookByName(q));
+  }
 }

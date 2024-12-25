@@ -19,6 +19,9 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long bookId;
 
+  @Enumerated
+  BookStatus bookStatus;
+
   @Column
   @NonNull
   private String bookName;
@@ -27,7 +30,13 @@ public class Book {
   @NonNull
   private String authors;
 
-  @Column
+  @Lob
+  @Column(length = 10000)
+  @NonNull
+  private String description;
+
+  @Lob
+  @Column(length = 10000)
   @NonNull
   private String bookCoverUrl;
 }
