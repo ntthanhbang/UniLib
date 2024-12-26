@@ -1,6 +1,7 @@
 package com.thanhbang.backend.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.thanhbang.backend.services.BookService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@CrossOrigin(origins = "localhost:5173")
 @RequestMapping("/api/v1/book")
 @RequiredArgsConstructor
 public class BookController {
