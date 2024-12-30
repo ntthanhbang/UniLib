@@ -23,14 +23,16 @@ public class BorrowService {
   private final BookService bookService;
   private final BookRepository bookRepository;
   private final ReserveBookService reserveBookService;
+  private final SendGridMailService sendGridMailService;
 
   public BorrowService(BorrowRepository borrowRepository, JwtService jwtService, BookService bookService,
-      BookRepository bookRepository, ReserveBookService reserveBookService) {
+      BookRepository bookRepository, ReserveBookService reserveBookService, SendGridMailService sendGridMailService) {
     this.borrowRepository = borrowRepository;
     // this.jwtService = jwtService;
     this.bookService = bookService;
     this.bookRepository = bookRepository;
     this.reserveBookService = reserveBookService;
+    this.sendGridMailService = sendGridMailService;
   }
 
   public List<Borrow> getAllBorrow() {
@@ -71,7 +73,9 @@ public class BorrowService {
 
       log.info("People to send email to");
       for (ReserveBook reservant : reserver) {
-        log.info("user: " + reservant.getUser().getEmail());
+          String content = "Hello "+ reservant.getUser().getFirstName() +" \n" +"Your book: " + book.getBookName()+ " is available";
+
+          sendGridMailService.sendMail("Your Reserve book is available", content, Collections.singletonList(reservant.getUser().getEmail()), null, null);
 
       }
 
