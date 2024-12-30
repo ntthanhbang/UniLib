@@ -36,3 +36,5 @@ build/
 ### env file
 .env
 sendgrid.env
+
+.gradle
