@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
-import com.thanhbang.backend.entities.Book;
 import com.thanhbang.backend.entities.ReserveBook;
 import com.thanhbang.backend.entities.User;
-import com.thanhbang.backend.services.BookService;
 import com.thanhbang.backend.services.JwtService;
 import com.thanhbang.backend.services.ReserveBookService;
 
@@ -26,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class ReserveControllerUser {
   private final JwtService jwtService;
   private final ReserveBookService reserveBookService;
-  private final BookService bookService;
 
   @GetMapping("/me")
   private ResponseEntity<List<ReserveBook>> getMyReserve(HttpServletRequest request) {

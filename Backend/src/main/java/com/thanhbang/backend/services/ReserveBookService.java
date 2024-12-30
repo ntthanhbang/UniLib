@@ -1,7 +1,6 @@
 package com.thanhbang.backend.services;
 
 import com.thanhbang.backend.entities.Book;
-import com.thanhbang.backend.entities.Borrow;
 import com.thanhbang.backend.entities.ReserveBook;
 import com.thanhbang.backend.entities.User;
 import com.thanhbang.backend.repositories.BookRepository;

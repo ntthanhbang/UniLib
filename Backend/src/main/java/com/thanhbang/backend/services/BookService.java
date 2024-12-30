@@ -1,9 +1,11 @@
 package com.thanhbang.backend.services;
 
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 
 import com.thanhbang.backend.entities.Book;
+import com.thanhbang.backend.entities.BookStatus;
 import com.thanhbang.backend.repositories.BookRepository;
 
 @Service
@@ -26,5 +28,17 @@ public class BookService {
   public List<Book> getBookByName(String name) {
     List<Book> res = bookRepository.findByBookNameContaining(name);
     return res;
+  }
+
+  public Book updateBookStatus(Long bookId, BookStatus bookStatus) {
+    Optional<Book> bookFinder = bookRepository.findById(bookId);
+    if (bookFinder.isPresent()) {
+      Book book = bookFinder.get();
+      book.setBookStatus(bookStatus);
+      bookRepository.save(book);
+      return book;
+    } else {
+      throw new NoSuchElementException("not found" + bookId);
+    }
   }
 }
