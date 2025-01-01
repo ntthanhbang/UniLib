@@ -51,10 +51,10 @@ public class BorrowService {
       if (book.getBookStatus() != BookStatus.UNAVAILABLE && book.getBookStatus() != BookStatus.PICKING) {
         LocalDate today = LocalDate.now();
         LocalDate returnDate = LocalDate.now().plusDays(14);
-        Borrow newBorrow = Borrow.builder().book(book).borrowStatus(BorrowStatus.HOLDING).user(user).pickUpDate(today)
+        Borrow newBorrow = Borrow.builder().book(book).borrowStatus(BorrowStatus.PICKING).user(user).pickUpDate(today)
             .returnDate(returnDate).build();
-        borrowRepository.save(newBorrow);
-        bookService.updateBookStatus(book.getBookId(), BookStatus.UNAVAILABLE);
+        borrowRepository.save(newBorrow);// PICKING Mean user are on their way to picking the book
+        bookService.updateBookStatus(book.getBookId(), BookStatus.PICKING);
         return newBorrow;
       } else {
         throw new NoSuchElementException("Book is unavailabe" + bookId);
@@ -62,6 +62,18 @@ public class BorrowService {
     } else {
       throw new NoSuchElementException("book not found" + bookId);
     }
+  }
+
+  public Borrow Confirm(long BorrowId) {
+
+    Borrow borrow = borrowRepository.findById(BorrowId).get();
+    Book book = borrow.getBook();
+    borrow.setBorrowStatus(BorrowStatus.HOLDING);
+    book.setBookStatus(BookStatus.UNAVAILABLE);
+
+    bookRepository.save(book);
+    borrowRepository.save(borrow);
+    return borrow;
   }
 
   public Borrow Return(Long borrowId) {
@@ -73,9 +85,11 @@ public class BorrowService {
 
       log.info("People to send email to");
       for (ReserveBook reservant : reserver) {
-          String content = "Hello "+ reservant.getUser().getFirstName() +" \n" +"Your book: " + book.getBookName()+ " is available";
+        String content = "Hello " + reservant.getUser().getFirstName() + " \n" + "Your book: " + book.getBookName()
+            + " is available";
 
-          sendGridMailService.sendMail("Your Reserve book is available", content, Collections.singletonList(reservant.getUser().getEmail()), null, null);
+        sendGridMailService.sendMail("Your Reserve book is available", content,
+            Collections.singletonList(reservant.getUser().getEmail()), null, null);
 
       }
 
