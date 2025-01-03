@@ -38,3 +38,7 @@ build/
 sendgrid.env
 
 .gradle
+
+
+#
+env.properties

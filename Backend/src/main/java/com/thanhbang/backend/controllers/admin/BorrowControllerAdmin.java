@@ -34,4 +34,10 @@ public class BorrowControllerAdmin {
   public ResponseEntity<Borrow> returnBook(@PathVariable long id) {
     return ResponseEntity.ok(borrowService.Return(id));
   }
+
+  @PostMapping("/confirm/{id}")
+  public ResponseEntity<Borrow> confirmBook(@PathVariable long id) {
+
+    return ResponseEntity.ok(borrowService.Confirm(id));
+  }
 }
