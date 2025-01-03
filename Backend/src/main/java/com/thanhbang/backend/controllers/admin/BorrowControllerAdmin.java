@@ -1,6 +1,7 @@
 package com.thanhbang.backend.controllers.admin;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.*;
 
 @RestController
+
 @RequestMapping("/api/v1/admin/borrow")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class BorrowControllerAdmin {
   private final BorrowService borrowService;
