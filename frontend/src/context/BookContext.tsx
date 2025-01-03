@@ -23,7 +23,7 @@ interface BookContextProps {
   borrowBook: (bookId: string) => Promise<void>;
   reserveBook: (bookId: string) => Promise<void>;
   user: User | null;
-  login: (user: User) => void; 
+  login: (user: User) => void;
   logout: () => void;
 }
 
@@ -37,21 +37,21 @@ const BookProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const login = (user: User) => {
     setUser(user);
-    if (user.role === 'admin') {
-      navigate('/admin/dashboard');
+    if (user.role === "admin") {
+      navigate("/admin/dashboard");
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
   const logout = () => {
-    setUser(null);
-    navigate('/login');
-  }
+    localStorage.clear();
+    navigate("/login");
+  };
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch("/api/books");
+      const response = await fetch("/api/v1/books");
       if (!response.ok) throw new Error("Failed to fetch books");
       const data = await response.json();
       setBooks(data);
