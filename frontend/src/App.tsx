@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useContext, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { BookContext } from "./context/BookContext";
+import Home from "./pages/Home";
+import SearchResults from "./pages/SearchResults";
+import BookDetails from "./pages/BookDetails";
+import LoginForm from "./components/LoginForm";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const { user } = useContext(BookContext);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + Vite</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Routes>
+      <Route path="/login" element={<LoginForm />} />
+      {/* Protect student routes */}
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/search"
+        element={user ? <SearchResults /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/book/:id"
+        element={user ? <BookDetails /> : <Navigate to="/login" />}
+      />
 
-export default App
+      {/* Protect admin routes */}
+      <Route
+        path="/admin/dashboard"
+        element={user?.role === "admin" ? <Admin /> : <Navigate to="/login" />}
+      />
+      {/* Add admin routes */}
+    </Routes>
+  );
+};
+
+export default App;
