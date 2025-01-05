@@ -1,11 +1,14 @@
 package com.thanhbang.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
+import java.util.*;
 
 @Data
 @Builder
@@ -39,4 +42,14 @@ public class Book {
   @Column(length = 10000)
   @NonNull
   private String bookCoverUrl;
+
+  @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  @JsonIgnore
+  private List<Borrow> borrower = new ArrayList<>();
+
+  @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  @JsonIgnore
+  private List<ReserveBook> Reserver = new ArrayList<>();
 }

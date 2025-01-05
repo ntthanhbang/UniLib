@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class BookController {
   private final BookService bookService;
 
-  @GetMapping("/")
+  @GetMapping
   public ResponseEntity<List<Book>> getAllBook() {
     return ResponseEntity.ok(bookService.getAllBooks());
   }

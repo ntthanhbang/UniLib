@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.thanhbang.backend.repositories.BookRepository;
 import com.thanhbang.backend.repositories.UsersRepositories;
@@ -24,20 +25,23 @@ public class DatabaseConfig {
   private final UsersRepositories userRepository;
   private final BookRepository bookRepository;
 
+  private final PasswordEncoder passwordEncoder;
+
   @Bean
   public CommandLineRunner init() {
     return args -> {
       // fake users
+
       userRepository.save(new User("Admin", "Admin", "admin@unilb.com",
-          "$2a$12$p9kvnyN7/xr9vYdg1d6n9u7WLygbngfI5Zq1LHqExHpYqTcWgmYqe", Roles.ADMIN)); // admin
-                                                                                         // username:admin@unilib.com
+          passwordEncoder.encode("admin"), Roles.ADMIN)); // admin
+      // username:admin@unilib.com
 
       // password:admin
 
       userRepository.save(new User("Nguyen", "Binh", "thebinhnguyen2703@gmail.com",
-          "$2a$12$Qvvr440y.bbKPNVZtgv7leDHbQ.U/yDuglzz7vIEwEY8o3NHDxNpi", Roles.USER)); // password: testuser1
+          passwordEncoder.encode("testuser1"), Roles.USER)); // password: testuser1
       userRepository.save(new User("Nguyen", "Binh 2", "thebinhnguyen2005@gmail.com",
-          "$2a$12$PdlZPhGO0VjplWTkzA0EoOOKhspqSokQcQbVm2OLmbI4lFUeKs28C", Roles.USER)); // password: testuser2
+          passwordEncoder.encode("testuser2"), Roles.USER)); // password: testuser2
 
       ClassPathResource res = new ClassPathResource("/books.csv");
       try (CSVReader csvReader = new CSVReader(new InputStreamReader(res.getInputStream()))) {
